@@ -198,6 +198,7 @@ namespace SpaceSim
     {
         public static List<SpaceObject> fetchSpaceObjects()
         {
+            /*
             string filepath = AppDomain.CurrentDomain.BaseDirectory;
             filepath = Path.GetFullPath(Path.Combine(filepath, @"..\..\..\.."));
             filepath = Path.Combine(filepath, "Library", "Data", "Planets.xlsx");
@@ -206,6 +207,28 @@ namespace SpaceSim
             List<SpaceObject> spaceObjects = new();
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ExcelWorksheet ark1 = new ExcelPackage(filepath).Workbook.Worksheets.First();
+            */
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+            List<SpaceObject> spaceObjects = new();
+
+            // load the embedded Excel into a memory stream
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = "Library.Data.Planets.xlsx"; // adjust to match your namespace + folder
+
+            using var embeddedStream = assembly.GetManifestResourceStream(resourceName);
+            if (embeddedStream == null)
+                throw new Exception($"Embedded resource '{resourceName}' not found");
+
+            // copy the stream into a MemoryStream so it can live beyond the using
+            var memStream = new MemoryStream();
+            embeddedStream.CopyTo(memStream);
+            memStream.Position = 0;
+
+            // now create a persistent ExcelPackage
+            var package = new ExcelPackage(memStream);
+            ExcelWorksheet ark1 = package.Workbook.Worksheets.First();
+
 
             int row = 2;
             String name;
