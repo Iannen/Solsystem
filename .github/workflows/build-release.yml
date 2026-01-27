@@ -26,13 +26,12 @@ jobs:
 
       - name: Publish
         run: dotnet publish GraphicalWpf/GraphicalWpf.csproj `
-         -c Release `
-         -r win-x64 `
-         --self-contained true `
-         /p:PublishSingleFile=true `
-         /p:IncludeAllContentForSelfExtract=true `
-         /p:AssemblyName=Solsystem `
-         -o ./publish
+             -c Release `
+             -r win-x64 `
+             --self-contained true `
+             /p:PublishSingleFile=true `
+             /p:IncludeAllContentForSelfExtract=true `
+             -o ./publish
 
       - name: Create Release and upload artifact
         uses: ncipollo/release-action@v1
