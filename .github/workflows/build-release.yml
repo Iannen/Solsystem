@@ -1,0 +1,44 @@
+name: Build and Release exe
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET 8 SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore NuGet packages
+        run: dotnet restore GraphicalWpf/GraphicalWpf.csproj
+
+      - name: Publish GraphicalWpf
+        run: dotnet publish GraphicalWpf/GraphicalWpf.csproj `
+             -c Release `
+             -r win-x64 `
+             --self-contained true `
+             /p:PublishSingleFile=true `
+             /p:IncludeAllContentForSelfExtract=true `
+             -o ./publish
+
+      - name: Create Release and upload artifact
+        uses: ncipollo/release-action@v1
+        with:
+          tag: latest
+          name: Solsystem (latest)
+          body: "Self-contained 'Solsystem' demo. Just run Solsystem.exe"
+          artifacts: ./publish/Solsystem.exe
+          allowUpdates: true
+          replacesArtifacts: true
