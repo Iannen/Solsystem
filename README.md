@@ -12,7 +12,7 @@ The app is a .NET solution consisting of two projects:
 
 ## Run Instructions
 
-Download Solsystem.exe from [this page](https://github.com/Iannen/Solsystem/releases/tag/latest) 
+Download Solsystem.exe from [this page](https://github.com/Iannen/Solsystem/releases/tag/latest)  
 Feel free to DL source code or clone repo if you want to take a look
 
 
